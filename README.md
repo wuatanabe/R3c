@@ -1,2 +1,2 @@
-# 3rc
+# R3c
 Rest Redmine Ruby Client
