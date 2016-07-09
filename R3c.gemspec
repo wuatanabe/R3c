@@ -25,6 +25,6 @@ Gem::Specification.new do |s|
 
   
   s.description       = <<desc
-  Redmine Rest Client writte in Ruby.
+  Redmine Rest Client written in Ruby.
 desc
 end
