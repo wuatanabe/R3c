@@ -6,7 +6,7 @@ module R3c
 
 
 def self.upload(file)
-  require "rest_client"
+  require "rest-client"
   require "json"
   response = RestClient.post("#{R3c::BaseEntity.site}/uploads.json?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}", file, {:multipart => true, :content_type => 'application/octet-stream'})
   puts response.inspect.to_s
