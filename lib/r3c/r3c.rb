@@ -40,16 +40,44 @@ class BaseEntity < ActiveResource::Base
    
 end
 
+class Project<BaseEntity
+end
+
 class Issue<BaseEntity
 end
 
+class Wiki<BaseEntity
 end
 
-#~ BaseEntity.set_site('http://localhost:3000/')
-#~ BaseEntity.set_format(:xml)
+class Tracker<BaseEntity
+end
 
-#~ BaseEntity.auth({api: {key: '8091d55257c4c90b6d56e83322622cb5f4ecee64'}})
-#~ puts Issue.find 1
-#~ BaseEntity.set_site('http://localhost:3001/')
-#~ puts Issue.to_s
+class Priority<BaseEntity
+end
+
+class CustomField<BaseEntity
+end
+
+class User<BaseEntity
+end
+
+class Group<BaseEntity
+end
+
+class Role<BaseEntity
+end
+
+class TimeEntry<BaseEntity
+end
+
+class Journal<BaseEntity
+end
+
+class Upload<BaseEntity
+end
+
+class Attachment<BaseEntity
+end
+ 
+end
 
