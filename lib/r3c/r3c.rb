@@ -1,5 +1,6 @@
 require "activeresource"
 
+
 module R3c
 
 class BaseEntity < ActiveResource::Base
@@ -26,7 +27,7 @@ class BaseEntity < ActiveResource::Base
   
   private 
   def self.api_key(api_key)
-    headers['X-Redmine-API-Key'] = api_key
+    self.headers['X-Redmine-API-Key'] = api_key
   end
   
    def self.basic_aut(params)
