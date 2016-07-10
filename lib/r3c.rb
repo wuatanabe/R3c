@@ -1,19 +1,28 @@
 require "r3c/r3c"
 require "r3c/version"
-
+require "rest-client"
+require "json"
 
 module R3c
 
 
 def self.upload(file)
-  require "rest-client"
-  require "json"
   response = RestClient.post("#{R3c::BaseEntity.site}/uploads.json?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}", file, {:multipart => true, :content_type => 'application/octet-stream'})
-  puts response.inspect.to_s
   token = JSON.parse(response)['upload']['token']
 end
 
-  
+def self.add_watcher(issue_id, user_id)
+  #POST /issues/[id]/watchers.[format]
+  response = RestClient.post("#{R3c::BaseEntity.site}/issues/#{issue_id}/watchers.xml?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}", {user_id: user_id})
+end
+
+def self.remove_watcher(issue_id, user_id)
+ #DELETE /issues/[id]/watchers/[user_id].[format]
+  response = RestClient.delete("#{R3c::BaseEntity.site}/issues/#{issue_id}/watchers/#{user_id}.xml?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}")
+end
+
+
+
  def self.version
     VERSION
  end
@@ -46,10 +55,10 @@ end
 end
 
 
-#~ R3c.site('http://localhost:3000/')
-#~ R3c.format(:xml)
+R3c.site('http://localhost:3000/')
+R3c.format(:xml)
 
-#~ R3c.auth({api: {key: '8091d55257c4c90b6d56e83322622cb5f4ecee64'}})
+R3c.auth({api: {key: '8091d55257c4c90b6d56e83322622cb5f4ecee64'}})
 
 #~ file = File.read('c:\windows-version.txt')
 #~ puts file.inspect.to_s

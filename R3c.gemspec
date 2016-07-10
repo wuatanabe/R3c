@@ -6,7 +6,7 @@ Gem::Specification.new do |s|
   s.version           = R3c::VERSION
   s.date              = Time.now.strftime('%Y-%m-%d')
   s.summary           = "Rest Redmine Ruby Client"
-  s.homepage          = "http://github.com//R3c"
+  s.homepage          = "https://github.com/wuatanabe/R3c"
   s.email             = "paolo.freuli@gmail.com"
   s.licenses	= ['MIT']
   s.authors           = [ "Paolo Freuli" ]

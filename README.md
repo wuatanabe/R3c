@@ -54,5 +54,5 @@ projects= R3c.project.all
 user= R3c.user.find 1
 ```
 
-See code for other examples
+See code for more examples
 

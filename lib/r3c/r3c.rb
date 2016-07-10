@@ -5,7 +5,7 @@ module R3c
 
 class BaseEntity < ActiveResource::Base
 
-  self.format = :json
+  self.format = :xml
 
   def self.set_site(url)
     self.site= url
