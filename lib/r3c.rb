@@ -55,10 +55,10 @@ end
 end
 
 
-R3c.site('http://localhost:3000/')
-R3c.format(:xml)
+#~ R3c.site('http://localhost:3000/')
+#~ R3c.format(:xml)
 
-R3c.auth({api: {key: '8091d55257c4c90b6d56e83322622cb5f4ecee64'}})
+#~ R3c.auth({api: {key: '8091d55257c4c90b6d56e83322622cb5f4ecee64'}})
 
 #~ file = File.read('c:\windows-version.txt')
 #~ puts file.inspect.to_s
