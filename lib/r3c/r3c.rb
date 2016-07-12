@@ -41,25 +41,31 @@ class BaseEntity < ActiveResource::Base
    
 end
 
-
-# *****   NOT yet Working ***** #
+# CRUD on Version
+# Example: R3c.project.find(1).get(:versions)
 class Version<BaseEntity
 end
 
-
-class WikiPage<BaseEntity
-  #self.prefix "/projects/editing_item"
-  #self.element_name ""
-end
-
+# CRUD on Membership
+# Example: Get memberships: R3c.project.find(1).get(:memberships)
+# Example: Create a membership: R3c.wiki_page.new
 class Membership<BaseEntity
   #self.prefix "/projects/editing_item"
   #self.element_name ""
 end
 
-class Enumeration<BaseEntity
+# List wiki on a project
+# R3c.project.find(1).get("wiki/index")
+
+# Get a wiki page by name
+# R3c.project.find(1).get("wiki")
+
+# Create  a WikiPage
+# R3c.wiki_page.new
+class WikiPage<BaseEntity
+  #self.prefix "/projects/editing_item"
+  #self.element_name ""
 end
-# **************************** #
 
 
 # CRUD on Project
@@ -110,6 +116,7 @@ end
 # CRUD on TimeEntry
 # Call R3c.time_entry.*
 # Example: R3c.time_entry.first
+# Example:  R3c.project.find(1).time_entries
 class TimeEntry<BaseEntity
 end
 
