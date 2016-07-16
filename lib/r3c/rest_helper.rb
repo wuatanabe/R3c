@@ -25,7 +25,7 @@ module R3c
   end
 
 
-  def self.enumerationsì(enumeration, format: "xml")
+  def self.enumerations(enumeration, format: "xml")
     #GET /enumerations/<enumeration>.[format]   #enumeration= "issue_priorities" OR  "time_entry_activities"
     response = RestClient.post("#{R3c::BaseEntity.site}/enumerations/#{enumeration}.#{format}?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}")   
   end
