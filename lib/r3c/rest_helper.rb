@@ -34,6 +34,7 @@ module R3c
     #GET /enumerations/<enumeration>.[format]   #enumeration= "issue_priorities" OR  "time_entry_activities"
     response = RestClient.get("#{R3c::BaseEntity.site}/enumerations/#{enumeration}.#{format}?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}")   
     return JSON.parse(response) if format == "json"
+    response
   end
   
   #Example:
