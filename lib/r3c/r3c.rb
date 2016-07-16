@@ -30,7 +30,7 @@ class BaseEntity < ActiveResource::Base
     self.headers['X-Redmine-API-Key'] = api_key
   end
   
-   def self.basic_aut(params)
+   def self.basic_auth(params)
      self.user= params[:user]
      self.password= params[:password] 
    end 
@@ -77,7 +77,21 @@ end
 
 # CRUD on Issue
 # Call R3c.issue.*
-# Example: R3c.issue.find 1
+# Examples: 
+# R3c.issue.find 1
+# issues =R3c.issue.find(:all, params: {tracker_id: 1})       #filtering (with defaul limit)
+# issues =R3c.issue.find(:all, params: { limit: 5, offset:20})    #retrieving with specified limit and offset
+# issues =R3c.issue.find(:all, params: { limit: 5, offset:20, tracker_id: 1}) #filtering and retrieving with specified limit and offset
+# issues= R3c.project.find(1).get(:issues) #retrieving a project issues
+# issues = R3c.issue.find(:all, params: {"query_id" => 12})
+# issues=R3c.issue.find(1, params: {include: "watchers"}) 
+# similarly you can include
+# - children
+# - attachments
+# - relations
+# - changesets
+# - journals
+# - watchers - Since 2.3.0
 class Issue<BaseEntity
 end
 
@@ -129,9 +143,16 @@ end
 
 # CRUD on Query
 # Call R3c.query.find(id)
-# Example: R3c.query.find 1
+# Examples: 
+# R3c.query.find 1
+# R3c.query.all
+# R3c.query.find :all
+# R3c.issue.find(:all, params: {"query_id" => 12})
  class Query<BaseEntity
-end
+ end
+ 
+ class Search<BaseEntity 
+ end
  
 end
 
