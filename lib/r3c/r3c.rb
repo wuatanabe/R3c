@@ -151,8 +151,6 @@ end
  class Query<BaseEntity
  end
  
- class Search<BaseEntity 
- end
  
 end
 
