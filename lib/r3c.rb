@@ -1,7 +1,7 @@
 require "r3c/r3c"
 require "r3c/version"
 require "rest-client"
-require "rest_helper"
+require "r3c/rest_helper"
 require "json"
 
 module R3c
