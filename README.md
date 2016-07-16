@@ -1,4 +1,7 @@
 # R3c
+
+[R3c.gem] (https://rubygems.org/gems/R3c)
+
 Rest Redmine Ruby Client
 
 ## Setup
