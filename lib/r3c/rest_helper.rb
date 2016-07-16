@@ -28,13 +28,16 @@ module R3c
     response
   end
 
-
+  #Example:
+  # R3c.enumerations("issue_priorities")  
   def self.enumerations(enumeration, format="xml")
     #GET /enumerations/<enumeration>.[format]   #enumeration= "issue_priorities" OR  "time_entry_activities"
     response = RestClient.get("#{R3c::BaseEntity.site}/enumerations/#{enumeration}.#{format}?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}")   
     return JSON.parse(response) if format == "json"
   end
   
+  #Example:
+  # R3c.search("sometext")  
   def self.search(q, format = "xml")
   # GET  '/search.xml', :q => 'recipe subproject commit', :all_words => ''
   response = RestClient.get("#{R3c::BaseEntity.site}/search.#{format}/?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}", {all_words: '', q: q})   
