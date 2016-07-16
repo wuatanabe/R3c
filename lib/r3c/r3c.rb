@@ -42,7 +42,9 @@ class BaseEntity < ActiveResource::Base
 end
 
 # CRUD on Version
-# Example: R3c.project.find(1).get(:versions)
+# Examples: 
+# R3c.project.find(1).get(:versions)
+# R3c.version.find(1)
 class Version<BaseEntity
 end
 

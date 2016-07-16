@@ -6,7 +6,7 @@ require "json"
 
 module R3c
 
-  def self.version
+  def self.r3c_version
     VERSION
   end
 
