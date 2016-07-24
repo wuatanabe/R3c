@@ -8,6 +8,10 @@ class BaseEntity < ActiveResource::Base
   self.format = :xml
 
   def self.set_site(url)
+   if !self.ssl_options	and url.include?("https")  
+    self.ssl_options ={} 
+    self.ssl_options[:verify_mode] =OpenSSL::SSL::VERIFY_PEER
+  end    
     self.site= url
   end
   
@@ -23,6 +27,14 @@ class BaseEntity < ActiveResource::Base
     else
      raise "Exception"	   
     end
+  end
+  
+  def  self.set_ssl(ssl_options)
+      self.ssl_options = {:cert         => ssl_options[:cert],
+				   :key          => ssl_options[:key],
+				   :ca_path      => ssl_options[:ca_path],
+                                   :verify_mode  => ssl_options[:verify_mode]
+				   }   
   end
   
   private 

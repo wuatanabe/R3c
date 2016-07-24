@@ -21,7 +21,20 @@ module R3c
   def self.auth auth
     R3c::BaseEntity.auth auth
   end
+  
+  def self.ssl ssl_options
+    if R3c::BaseEntity.include?("https") 
+     return R3c::BaseEntity.set_ssl ssl_options
+    end
+  end
 
+  def self.verify_ssl?
+     if R3c::BaseEntity.self.ssl_options[:verify_mode] == OpenSSL::SSL::VERIFY_NONE
+	return false
+     else 
+	return true
+     end
+  end
  
  private
  
