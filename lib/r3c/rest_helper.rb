@@ -6,9 +6,18 @@ module R3c
 
 
 
-  def self.upload(file, format="xml")
-    response = execute(method: :post, url: "#{R3c::BaseEntity.site}/uploads.#{format}", file: file, :multipart => true, :content_type => 'application/octet-stream')
-    token = JSON.parse(response)['upload']['token']
+  def self.upload(file)
+    response = nil
+    params= {:multipart => true, :content_type => 'application/octet-stream'}
+    params= set_ssl_params(params)
+    if !R3c::BaseEntity.user
+      #response = RestClient.post("#{R3c::BaseEntity.site}/uploads.json?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}", file, {:multipart => true, :content_type => 'application/octet-stream'})
+       response = RestClient.post("#{R3c::BaseEntity.site}/uploads.json?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}", file, params)
+    else
+      params = add_auth(params)	    
+      response = RestClient.post("#{R3c::BaseEntity.site}/uploads.json", file, params)
+    end
+      JSON.parse(response)['upload']['token'] 
   end
 
 
@@ -55,19 +64,29 @@ module R3c
 
  private
   def self.execute(params)
+   params = add_basic_auth(params)
+   params= set_ssl_params(params)
+   puts "rest-helper.rb->execute: params="+params.inspect.to_s
+   RestClient::Request.execute(params)
+  end
+  
+  def self.add_auth(params)
    if R3c::BaseEntity.user
      params[:user]= R3c::BaseEntity.user
      params[:password]=R3c::BaseEntity.password
    else
      params[:url]= params[:url]+"?key=#{R3c::BaseEntity.headers['X-Redmine-API-Key']}"
    end
-   puts "rest-helper.rb->execute: params="+params.inspect.to_s
+    return params
+  end
+
+  def self.set_ssl_params(params)
    if R3c::BaseEntity.site.to_s.include?("https") 
      params[:verify_ssl]=R3c::BaseEntity.ssl_options[:verify_mode]
      params= params.merge(R3c::BaseEntity.ssl_options)
-     puts "rest-helper.rb->execute: params="+params.inspect.to_s
    end
-   RestClient::Request.execute(params)
+    return params
   end
+
 
 end
