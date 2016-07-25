@@ -14,10 +14,7 @@ class R3cTest < Minitest::Test
   #Create, Update and Delete a Project
   def test_crud_project
     #create
-    @project = R3c.project.new
-    @project.name = ('a'..'z').to_a.shuffle.first(8).join #random project name
-    @project.identifier=@project.name
-    @project.save!
+    @project= create_project
     assert_equal @project.name, R3c.project.find(@project.id).name  
     size= R3c.project.all.size
     #update
@@ -25,17 +22,14 @@ class R3cTest < Minitest::Test
     @project.save!
     assert_equal "replaced", R3c.project.find(@project.id).name  
     #delete
-    R3c.project.delete @project.id
+    delete_project(@project.id)
     assert_equal (size-1), R3c.project.all.size
   end
 
    #Operations on issues
    def test_issues
     #create a project container	   
-    @project = R3c.project.new
-    @project.name = ('a'..'z').to_a.shuffle.first(8).join #random project name
-    @project.identifier=@project.name
-    @project.save!   
+    @project= create_project
     #create first issue
     @issue = R3c.issue.new
     @issue.subject="Issue for test"
@@ -45,11 +39,38 @@ class R3cTest < Minitest::Test
     #update issue
     @issue.subject="Subject Changed"
     @issue.save!
-    assert "Subject Changed", R3c.issue.find(@issue.id).subject
+    assert_equal "Subject Changed", R3c.issue.find(@issue.id).subject
+    #attach file
+     file = File.read('c:\windows-version.txt')
+     token = R3c.upload file
+     issue_params= {"project_id"=> 1, "subject"=> "This is the subject"}
+     issue_params["uploads"]= [{"upload"=>{"token"=> token, "filename"=> "R3c.gemspec", "description"=> "a gemspec", "content_type"=> "text/plain"}}]
+     @issue= R3c.issue.create(issue_params)
+     @issue= R3c.issue.find(@issue.id, params: {include: "attachments"})
+     assert_equal "R3c.gemspec", @issue.attachments.first.filename
+    #add wathcher
+    #TBD
+    #remove watchernd
+    #TBD
     #delete issue
     R3c.issue.delete @issue.id
-    assert 0, R3c.issue.all.size  
+    assert 0, R3c.issue.all.size
+    #clean up project
+    delete_project(@project.id)
    end
 
-  
+
+
+  private
+    def create_project
+      @project = R3c.project.new
+      @project.name = ('a'..'z').to_a.shuffle.first(8).join #random project name
+      @project.identifier=@project.name
+      @project.save!
+      @project
+    end
+    
+    def delete_project(id)
+          R3c.project.delete id
+    end
 end
