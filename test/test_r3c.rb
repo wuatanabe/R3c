@@ -43,15 +43,25 @@ class R3cTest < Minitest::Test
     #attach file
      file = File.read('c:\windows-version.txt')
      token = R3c.upload file
-     issue_params= {"project_id"=> 1, "subject"=> "This is the subject"}
+     random_string=('a'..'z').to_a.shuffle.first(8).join 
+     issue_params= {"project_id"=> 1, "subject"=> "This is the subject #{random_string}"}
      issue_params["uploads"]= [{"upload"=>{"token"=> token, "filename"=> "R3c.gemspec", "description"=> "a gemspec", "content_type"=> "text/plain"}}]
      @issue= R3c.issue.create(issue_params)
      @issue= R3c.issue.find(@issue.id, params: {include: "attachments"})
      assert_equal "R3c.gemspec", @issue.attachments.first.filename
+    #add a note
+    #TBD
     #add wathcher
-    #TBD
-    #remove watchernd
-    #TBD
+    R3c.add_watcher(@issue.id, 1)
+    @issue= R3c.issue.find(@issue.id, params: {include: "watchers"})
+    assert_equal 1, @issue.watchers.size
+    #remove watcher
+    R3c.remove_watcher(@issue.id, 1)
+    @issue= R3c.issue.find(@issue.id, params: {include: "watchers"})
+    assert_equal 0, @issue.watchers.size
+    #search
+    results= R3c.search(random_string)
+    assert_equal 1, results["results"].size
     #delete issue
     R3c.issue.delete @issue.id
     assert 0, R3c.issue.all.size

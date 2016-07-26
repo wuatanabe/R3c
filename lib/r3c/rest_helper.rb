@@ -51,20 +51,44 @@ module R3c
     response
   end
   
+  #Example:
+  # R3c.relations(issue_id)  
+  def self.relations(issue_id)
+    response =  self.execute(method: :get, url: "#{R3c::BaseEntity.site}/issues/#{issue.id}/relations.#{format}")   
+    return JSON.parse(response) if format == "json"
+    response
+  end 
 
+   def self.add_relation(issue_id, issue_to_id, relation_type, delay=nil)
+    response =  self.execute(method: :post, url: "#{R3c::BaseEntity.site}/issues/#{issue.id}/relations.#{format}", headers: {params: {issue_to_id: issue_to_id, relation_type: relation_type, delay: delay}})   
+    return JSON.parse(response) if format == "json"
+    response
+   end
+   
+   def self.get_relation(relation_id)
+    response =  self.execute(method: :get, url: "#{R3c::BaseEntity.site}/relations/#{relation_id}.#{format}")   
+    return JSON.parse(response) if format == "json"
+    response
+   end
+   
+   def self.delete(relation_id)
+    response =  self.execute(method: :delete, url: "#{R3c::BaseEntity.site}/relations/#{relation_id}.#{format}")   
+    return JSON.parse(response) if format == "json"
+    response
+   end
   
   #Example:
   # R3c.search("sometext")  
-  def self.search(q, format = "xml")
+  def self.search(q, format = "json")
   # GET  '/search.xml', :q => 'recipe subproject commit', :all_words => ''
   response = execute(method: :get, url: "#{R3c::BaseEntity.site}/search.#{format}",  headers: {params: {all_words: "", q: q}} )  
-  return JSON.parse(response) if format == "json"
+  return JSON.parse(response)# if format == "json"
   response
   end
 
  private
   def self.execute(params)
-   params = add_basic_auth(params)
+   params = add_auth(params)
    params= set_ssl_params(params)
    puts "rest-helper.rb->execute: params="+params.inspect.to_s
    RestClient::Request.execute(params)
