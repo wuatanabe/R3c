@@ -40,7 +40,7 @@ class R3cTest < Minitest::Test
     @issue.subject="Subject Changed"
     @issue.save!
     assert_equal "Subject Changed", R3c.issue.find(@issue.id).subject
-    #attach file
+    #attach file to issue
      file = File.read('c:\windows-version.txt')
      token = R3c.upload file
      random_string=('a'..'z').to_a.shuffle.first(8).join 
@@ -49,17 +49,17 @@ class R3cTest < Minitest::Test
      @issue= R3c.issue.create(issue_params)
      @issue= R3c.issue.find(@issue.id, params: {include: "attachments"})
      assert_equal "R3c.gemspec", @issue.attachments.first.filename
-    #add a note
+    #add a note to issue
     #TBD
-    #add wathcher
+    #add wathcher to issue
     R3c.add_watcher(@issue.id, 1)
     @issue= R3c.issue.find(@issue.id, params: {include: "watchers"})
     assert_equal 1, @issue.watchers.size
-    #remove watcher
+    #remove watcher from issue
     R3c.remove_watcher(@issue.id, 1)
     @issue= R3c.issue.find(@issue.id, params: {include: "watchers"})
     assert_equal 0, @issue.watchers.size
-    #search
+    #search a string in issues (will search also in wiki)
     results= R3c.search(random_string)
     assert_equal 1, results["results"].size
     #delete issue
@@ -68,8 +68,52 @@ class R3cTest < Minitest::Test
     #clean up project
     delete_project(@project.id)
    end
+   
+   
+   def test_user
+   #create_projenct
+   project= create_project
+   #get user
+     user= R3c.user.find 1
+     puts "user=#{user.inspect.to_s}"
+     assert_equal  "admin", user.login
+   #all user
+     user_size= R3c.user.all.size
+   #create user
+     user = R3c.user.new
+     user.firstname="new"
+     user.lastname="user"
+     user.login="new.user"
+     user.password="new.password"
+     user.password_confirmation= "new.password"
+     user.mail="new.user@r3c.it"
+	
+    if user.save
+    else
+      puts user.errors.inspect.to_s
+    end
+   #create group
+   #TBD
+   #create project membership  
+   #delete user
+     R3c.user.delete user.id   
+     assert_equal user_size, R3c.user.all.size
+   #delete project
+     R3c.project.delete project.id
+   end
 
+  
+  #TBD
+  def test_wiki
+  end
 
+  #TBD
+  def test_issue_custom_fields
+  end
+  
+  #TBD
+  def test_other_stuff
+  end
 
   private
     def create_project

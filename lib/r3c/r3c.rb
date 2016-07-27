@@ -48,7 +48,7 @@ class BaseEntity < ActiveResource::Base
    end 
 
    def self.to_s
-      {format: self.format, site: self.site, api_key: self.headers['X-Redmine-API-Key'] , user: self.user, password: self.password}
+      {format: self.format, site: self.site, api_key: self.headers['X-Redmine-API-Key'] , x: self.user, password: self.password}
    end
    
 end
